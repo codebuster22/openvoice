@@ -2,7 +2,8 @@
 
 **Feature Branch**: `001-voice-ai-pipeline`
 **Created**: 2025-11-06
-**Status**: Draft
+**Updated**: 2025-11-06
+**Status**: ✅ Approved
 **Input**: User description: "Voice AI Pipeline MVP with Web Demo - Complete end-to-end STT → LLM → TTS connection to OpenAI and ElevenLabs or Deepgram with a web demo where users can enter API keys for all services, select model and voice, enter system prompt for the assistant"
 
 ## Execution Flow (main)
@@ -109,8 +110,8 @@
 
 #### Very Long User Speech
 - **What happens when** user speaks continuously for >30 seconds without pausing?
-  - [NEEDS CLARIFICATION: Should system interrupt after a timeout, or wait indefinitely?]
-  - **Recommendation**: Wait up to 60 seconds, then force-end turn
+  - **Expected**: System waits up to 60 seconds, then automatically ends turn and processes speech
+  - **Rationale**: Prevents indefinite waiting while accommodating long-form speech
 
 #### Simultaneous Speaking (No Interruption Handling)
 - **What happens when** user starts speaking while AI is still responding?
@@ -168,7 +169,7 @@
 - **FR-026**: System MUST display clear error messages when API authentication fails
 - **FR-027**: System MUST display error when network connection is lost during conversation
 - **FR-028**: System MUST handle microphone permission denial gracefully with user instructions
-- **FR-029**: System MUST log errors for debugging purposes [NEEDS CLARIFICATION: Where should logs be accessible - browser console, server, file?]
+- **FR-029**: System MUST log errors to browser console for debugging purposes (structured logging for server in v2)
 
 #### Performance
 - **FR-030**: System MUST begin displaying user's speech as text within 2 seconds of user speaking
@@ -183,7 +184,7 @@
 - **NFR-003**: Error messages MUST be written in plain language for non-technical users
 
 #### Security
-- **NFR-004**: System MUST NOT store or log API credentials [NEEDS CLARIFICATION: Can credentials be stored in browser session storage for convenience?]
+- **NFR-004**: System MAY store API credentials in browser sessionStorage for convenience (cleared when tab closes, not persisted to disk)
 - **NFR-005**: System MUST use secure connections (HTTPS/WSS) for all audio and data transmission
 
 #### Compatibility
@@ -193,7 +194,7 @@
 
 #### Reliability
 - **NFR-009**: System MUST recover gracefully from transient provider API failures (show error, allow retry)
-- **NFR-010**: System MUST handle API rate limits gracefully [NEEDS CLARIFICATION: Should system queue requests or immediately fail?]
+- **NFR-010**: System MUST handle API rate limits by failing immediately with clear error message ("Provider rate limit exceeded, please wait"), allowing manual retry
 
 ### Key Entities _(include if feature involves data)_
 
@@ -201,6 +202,30 @@
 - **Conversation**: Represents an active or completed voice interaction session, containing ordered list of messages and current state (idle, listening, processing, speaking)
 - **Message**: Represents a single conversational turn with role (user or assistant), text content, timestamp, and audio data (for AI messages)
 - **Session**: Represents user's browser session, maintaining conversation history and configuration until page refresh
+
+---
+
+## Resolved Clarifications
+
+The following design decisions were made to resolve initial ambiguities:
+
+1. **Maximum conversation duration**: No time or message limits for MVP (user manually stops). Prevents added complexity.
+   - **Decision**: No limits in v1
+
+2. **Transcript persistence**: Transcripts do NOT survive page refresh (no local storage)
+   - **Decision**: Session-only for simplicity, add persistence in v2 if needed
+
+3. **Audio quality settings**: Use provider defaults (24kHz for ElevenLabs, provider-optimized for others)
+   - **Decision**: No user configuration for MVP, reduces UI complexity
+
+4. **Log storage location**: Errors logged to browser console (developers can access DevTools)
+   - **Decision**: Browser console for MVP, structured server logging in v2
+
+5. **API credential storage**: Use browser sessionStorage (survives refresh, cleared on tab close)
+   - **Decision**: Good balance of convenience and security for developer tool
+
+6. **Rate limit handling**: Fail immediately with clear error message, allow manual retry
+   - **Decision**: No request queuing complexity, transparent error handling
 
 ---
 
@@ -260,20 +285,11 @@ The following are intentionally NOT included in this MVP:
 
 ### Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain (6 clarifications pending user input)
+- [x] No [NEEDS CLARIFICATION] markers remain (all 6 clarifications resolved)
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Scope is clearly bounded
 - [x] Dependencies and assumptions identified
-
-### Pending Clarifications
-
-1. **Maximum conversation duration**: Should sessions have a time limit or message count limit?
-2. **Transcript persistence**: Should transcripts survive page refresh (browser local storage)?
-3. **Audio quality settings**: Should users be able to configure bitrate/sample rate, or use defaults?
-4. **Log storage location**: Where should error logs be accessible for debugging?
-5. **API credential storage**: Can credentials be stored in browser session storage for convenience, or must they be re-entered each page load?
-6. **Rate limit handling**: Should system queue requests when rate limited, or fail immediately?
 
 ---
 
@@ -285,12 +301,11 @@ The following are intentionally NOT included in this MVP:
 - [x] User scenarios defined
 - [x] Requirements generated (32 functional, 10 non-functional)
 - [x] Entities identified (4 entities)
-- [ ] Review checklist passed (pending clarifications resolution)
+- [x] Review checklist passed (all clarifications resolved)
+- [x] Specification approved and finalized
 
 ---
 
-**Next Steps:**
-1. Review this specification with stakeholders
-2. Resolve [NEEDS CLARIFICATION] items
-3. Update checklist when all clarifications are addressed
-4. Proceed to `/plan` phase for technical design
+**Status**: ✅ APPROVED - Ready for technical planning phase
+
+**Next Phase:** `/plan` - Create technical design and architecture
