@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Build outputs
+dist
+*.tsbuildinfo
+
+# Tests
+coverage
+*.test.ts
+*.spec.ts
+tests/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+docs/
+specs/
+
+# Environment files (sensitive)
+.env
+.env.*
+
+# Misc
+.DS_Store
+*.log
