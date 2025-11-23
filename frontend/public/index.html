@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenVoice - Voice AI Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎙️ OpenVoice</h1>
+      <p>Voice AI Conversation Demo</p>
+    </header>
+
+    <!-- Configuration Panel -->
+    <div class="config-panel" id="configPanel">
+      <h2>Configuration</h2>
+
+      <div class="form-group">
+        <label for="deepgramApiKey">Deepgram API Key:</label>
+        <input
+          type="password"
+          id="deepgramApiKey"
+          data-testid="deepgram-api-key"
+          placeholder="Enter your Deepgram API key"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="openaiApiKey">OpenAI API Key:</label>
+        <input
+          type="password"
+          id="openaiApiKey"
+          data-testid="openai-api-key"
+          placeholder="Enter your OpenAI API key"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="elevenLabsApiKey">ElevenLabs API Key:</label>
+        <input
+          type="password"
+          id="elevenLabsApiKey"
+          data-testid="elevenlabs-api-key"
+          placeholder="Enter your ElevenLabs API key"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="modelSelect">AI Model:</label>
+        <select id="modelSelect" data-testid="model-select">
+          <option value="gpt-4-turbo">GPT-4 Turbo (Recommended)</option>
+          <option value="gpt-4">GPT-4</option>
+          <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="voiceSelect">Voice:</label>
+        <select id="voiceSelect" data-testid="voice-select">
+          <option value="21m00Tcm4TlvDq8ikWAM">Rachel (Default)</option>
+          <option value="EXAVITQu4vr4xnSDxMaL">Bella</option>
+          <option value="ErXwobaYiN019PkySvjV">Antoni</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="systemPrompt">System Prompt:</label>
+        <textarea
+          id="systemPrompt"
+          data-testid="system-prompt"
+          rows="3"
+          placeholder="You are a helpful AI assistant."
+        >You are a helpful AI assistant.</textarea>
+      </div>
+
+      <div class="error-message" id="errorMessage" data-testid="error-message"></div>
+
+      <div class="button-group">
+        <button id="startButton" data-testid="start-button" class="btn btn-primary">
+          Start Conversation
+        </button>
+        <button
+          id="stopButton"
+          data-testid="stop-button"
+          class="btn btn-secondary"
+          disabled
+        >
+          Stop Conversation
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Indicator -->
+    <div class="status-panel">
+      <div class="status-indicator" id="statusIndicator" data-testid="status">
+        <span class="status-dot"></span>
+        <span id="statusText">Idle</span>
+      </div>
+    </div>
+
+    <!-- Transcript Panel -->
+    <div class="transcript-panel">
+      <h2>Transcript</h2>
+      <div class="transcript" id="transcript" data-testid="transcript">
+        <p class="placeholder">Start a conversation to see the transcript...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
